@@ -5,8 +5,48 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ExcelJoin"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Excel Join" Height="350" Width="700">
+    <Window.Resources>
+        <Style TargetType="Button" x:Key="md-btn">
+            <Setter Property="Width" Value="100"></Setter>
+            <Setter Property="Height" Value="40"></Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
-        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="120"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <DockPanel Grid.Row="0" Grid.Column="0">
+                <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Style="{StaticResource md-btn}">选择workbook1</Button>
+                <TextBox Name="InputPath1" HorizontalAlignment="Stretch"></TextBox>
+            </DockPanel>
+            <ComboBox Name="SelectSheet1" Grid.Row="0" Grid.Column="1"></ComboBox>
+            <TextBox Name="InputCol1" Grid.Row="0" Grid.Column="2"></TextBox>
+            <DockPanel Grid.Row="1" Grid.Column="0">
+                <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Style="{StaticResource md-btn}">选择workbook2</Button>
+                <TextBox Name="InputPath2" HorizontalAlignment="Stretch"></TextBox>
+            </DockPanel>
+            <ComboBox Name="SelectSheet2" Grid.Row="1" Grid.Column="1"></ComboBox>
+            <TextBox Name="InputCol2" Grid.Row="1" Grid.Column="2"></TextBox>
+            <DockPanel Grid.Row="2" Grid.Column="0">
+                <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Style="{StaticResource md-btn}">保存到</Button>
+                <TextBox Name="InputPath3" HorizontalAlignment="Stretch"></TextBox>
+            </DockPanel>
+            <Label Grid.Row="2" Grid.Column="1">表名</Label>
+            <TextBox Grid.Row="2" Grid.Column="2"></TextBox>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="3" Grid.ColumnSpan="3">
+                <TextBlock Name="TextLog" TextWrapping="Wrap"></TextBlock>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </Window>
+<!--https://docs.microsoft.com/en-us/dotnet/framework/wpf/advanced/layout-->
