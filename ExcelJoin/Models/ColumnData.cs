@@ -8,6 +8,7 @@ namespace ExcelJoin.Models
 {
     public class ColumnData
     {
-        public string Value { get; set; }
+        public int Index { get; set; }
+        public Object Value { get; set; }
     }
 }

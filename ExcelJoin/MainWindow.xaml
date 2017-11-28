@@ -4,13 +4,20 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ExcelJoin"
+        xmlns:model="clr-namespace:ExcelJoin.Models"
         mc:Ignorable="d"
-        Title="Excel Join" Height="350" Width="700">
+        Title="Excel Join" Height="350" Width="700"
+        Name="MainWindow1">
     <Window.Resources>
         <Style TargetType="Button" x:Key="md-btn">
             <Setter Property="Width" Value="100"></Setter>
             <Setter Property="Height" Value="40"></Setter>
         </Style>
+        <!--<DataTemplate DataType="{x:Type model:Sheet}" x:Key="tmpSelect">
+            <Grid>
+                <TextBlock Text="{Binding Name}"></TextBlock>
+            </Grid>
+        </DataTemplate>-->
     </Window.Resources>
     <Grid>
         <Grid>
@@ -26,23 +33,57 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <DockPanel Grid.Row="0" Grid.Column="0">
-                <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Style="{StaticResource md-btn}">选择workbook1</Button>
-                <TextBox Name="InputPath1" HorizontalAlignment="Stretch"></TextBox>
+                <Button
+                    Name="btnChoose1" 
+                    Click="btnChoose1_Click"
+                    DockPanel.Dock="Right" 
+                    HorizontalAlignment="Right" 
+                    Style="{StaticResource md-btn}">选择workbook1</Button>
+                <TextBox Name="InputPath1" 
+                         TextChanged="InputPath_TextChanged"
+                         HorizontalAlignment="Stretch"/>
             </DockPanel>
-            <ComboBox Name="SelectSheet1" Grid.Row="0" Grid.Column="1"></ComboBox>
-            <TextBox Name="InputCol1" Grid.Row="0" Grid.Column="2"></TextBox>
+            <ComboBox
+                Name="SelectSheet1"
+                Grid.Row="0" Grid.Column="1"
+                SelectionChanged="SelectSheet_Selected"
+                DisplayMemberPath="Name"
+                ></ComboBox>
+            <TextBox Name="InputCol1" Grid.Row="0" Grid.Column="2"/>
             <DockPanel Grid.Row="1" Grid.Column="0">
-                <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Style="{StaticResource md-btn}">选择workbook2</Button>
-                <TextBox Name="InputPath2" HorizontalAlignment="Stretch"></TextBox>
+                <Button
+                    Name="btnChoose2"
+                    DockPanel.Dock="Right" 
+                    HorizontalAlignment="Right" 
+                    Click="btnChoose2_Click"
+                    Style="{StaticResource md-btn}">选择workbook2</Button>
+                <TextBox Name="InputPath2"
+                         TextChanged="InputPath_TextChanged"
+                         HorizontalAlignment="Stretch"></TextBox>
             </DockPanel>
-            <ComboBox Name="SelectSheet2" Grid.Row="1" Grid.Column="1"></ComboBox>
-            <TextBox Name="InputCol2" Grid.Row="1" Grid.Column="2"></TextBox>
+            <ComboBox
+                Name="SelectSheet2"
+                DisplayMemberPath="Name"
+                Grid.Row="1" Grid.Column="1" 
+                SelectionChanged="SelectSheet_Selected"
+               />
+            <TextBox Name="InputCol2" Grid.Row="1" Grid.Column="2"/>
             <DockPanel Grid.Row="2" Grid.Column="0">
                 <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Style="{StaticResource md-btn}">保存到</Button>
-                <TextBox Name="InputPath3" HorizontalAlignment="Stretch"></TextBox>
+                <TextBox Name="InputPath3" 
+                         HorizontalAlignment="Stretch"/>
             </DockPanel>
-            <Label Grid.Row="2" Grid.Column="1">表名</Label>
-            <TextBox Grid.Row="2" Grid.Column="2"></TextBox>
+            <Grid Grid.Row="2" Grid.Column="1">
+                <Label HorizontalAlignment="Left" Width="40">表名</Label>
+                <TextBox
+                    Name="inputSheetName"
+                    HorizontalAlignment="Right"
+                    Width="80"/>
+            </Grid>
+            <Button
+                Grid.Row="2" Grid.Column="2"
+                Name="btnJoin"
+                Click="btnJoin_Click">生成</Button>
             <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="3" Grid.ColumnSpan="3">
                 <TextBlock Name="TextLog" TextWrapping="Wrap"></TextBlock>
             </ScrollViewer>

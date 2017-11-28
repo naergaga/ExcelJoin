@@ -57,8 +57,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Actions\JoinAction.cs" />
+    <Compile Include="Models\Column.cs" />
     <Compile Include="Providers\Epplus\BookProvider.cs" />
     <Compile Include="Providers\Epplus\SheetProvider.cs" />
+    <Compile Include="Providers\Epplus\Workbook.cs" />
     <Compile Include="Providers\ISheetProvider.cs" />
     <Compile Include="Providers\IBookProvider.cs" />
     <Page Include="MainWindow.xaml">
@@ -96,6 +99,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="files\xlsx\class1.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -105,6 +111,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

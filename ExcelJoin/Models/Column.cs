@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace ExcelJoin.Models
 {
-    public class Row
+    public class Column
     {
-        public String Identity { get; set; }
-        public List<ColumnData> Data { get; set; }
+        public string Name { get; set; }
     }
 }
