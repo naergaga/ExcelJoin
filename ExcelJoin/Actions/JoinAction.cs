@@ -16,7 +16,7 @@ namespace ExcelJoin.Actions
 
         }
 
-        public void Export(Sheet sheet1, Sheet sheet2, string outpath, string sheetName)
+        public void Export(Sheet sheet1, Sheet sheet2, string outpath, string sheetName, bool headTitle = false)
         {
             var newFile = new FileInfo(outpath);
             if (newFile.Exists)
@@ -24,10 +24,10 @@ namespace ExcelJoin.Actions
                 newFile.Delete();
                 newFile = new FileInfo(outpath);
             }
-            var query = from rs1 in sheet1.Rows
-                        join rs2 in sheet2.Rows
-                        on rs1.Identity equals rs2.Identity
-                        select new { Identity=rs1.Identity, Data1=rs1.Data,Data2=rs2.Data,Columns1=sheet1.Columns,Columns2 =sheet2.Columns};
+            var query = from s1row in sheet1.Rows
+                        join s2row in sheet2.Rows
+                        on s1row.Identity equals s2row.Identity
+                        select new { Identity = s1row.Identity, Data1 = s1row.Data, Data2 = s2row.Data };
             var list = query.ToList();
 
             using (var package = new ExcelPackage(newFile))
@@ -35,14 +35,30 @@ namespace ExcelJoin.Actions
                 ExcelWorksheet worksheet = package.Workbook.Worksheets.Add(sheetName);
 
                 int rowIndex = 1;
-                for (int i = 0; i < list.Count; i++,rowIndex++)
+                //write column title
+                if (headTitle)
+                {
+                    var colIndex = 1;
+                    for (int i = 0; i < sheet1.Columns.Count; i++,colIndex++)
+                    {
+                        worksheet.Cells[rowIndex, colIndex].Value = sheet1.Columns[i].Name;
+                    }
+                    for (int i = 0; i < sheet2.Columns.Count; i++, colIndex++)
+                    {
+                        worksheet.Cells[rowIndex, colIndex].Value = sheet2.Columns[i].Name;
+                    }
+
+                    rowIndex+=1;
+                }
+                //write column data
+                for (int i = 0; i < list.Count; i++, rowIndex++)
                 {
                     var rowData = list[i];
                     var data1 = rowData.Data1;
                     var data2 = rowData.Data2;
                     var col = 1;
-                    
-                    for (int i2 = 0; i2 < data1.Count; i2++,col++)
+
+                    for (int i2 = 0; i2 < data1.Count; i2++, col++)
                     {
                         worksheet.Cells[rowIndex, col].Value = data1[i2].Value;
                     }

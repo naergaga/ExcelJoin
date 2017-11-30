@@ -81,7 +81,7 @@ namespace ExcelJoin
             var sheet1 = sp.Get(col1);
             var sheet2 = sp2.Get(col2);
             JoinAction action = new JoinAction();
-            action.Export(sheet1, sheet2, outPath, sheetName);
+            action.Export(sheet1, sheet2, outPath, sheetName,true);
         }
 
         /// <summary>

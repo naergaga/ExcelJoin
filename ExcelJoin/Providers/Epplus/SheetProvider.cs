@@ -80,6 +80,7 @@ namespace ExcelJoin.Providers.Epplus
                     if (headTitle) return (ri + 1, titleList);
                     return (ri, null);
                 }
+                titleList?.Clear();
             }
             return (0,null); //没有完整的一行
         }
