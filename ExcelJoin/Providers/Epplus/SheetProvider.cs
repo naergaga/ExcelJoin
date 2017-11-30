@@ -22,38 +22,16 @@ namespace ExcelJoin.Providers.Epplus
         public Sheet GetSimple()
         {
             var sheetItem = new Sheet { Name = sheet.Name };
-            if (!headTitle)
-            {
-                return sheetItem;
-            }
-
-            sheetItem.Columns = new List<Column>();
-            var colLength = sheet.Dimension.Columns;
-            for (int i = 1; i <= colLength; i++)
-            {
-                var name = sheet.Cells[1, i].Value.ToString();
-                sheetItem.Columns.Add(new Column { Name = name });
-            }
-
             return sheetItem;
         }
 
         public Sheet Get(int identityIndex)
         {
-            var sheetItem = new Sheet { Name = sheet.Name,Rows = new List<Row>() };
+            var sheetItem = new Sheet { Name = sheet.Name, Rows = new List<Row>() };
             var colLength = sheet.Dimension.Columns;
-            int rowIndex;
-            if (headTitle)
-            {
-                sheetItem.Columns = new List<Column>();
-                for (int i = 1; i <= colLength; i++)
-                {
-                    var name = sheet.Cells[1, i].Value.ToString();
-                    sheetItem.Columns.Add(new Column { Name = name });
-                }
-                rowIndex = 2;
-            }
-            else { rowIndex = 1; }
+            var a = DetectData(headTitle);
+            int rowIndex = a.dataIndex;
+            sheetItem.Columns = a.titleList;
 
             //获取每一行
             var rowNum = sheet.Dimension.Rows;
@@ -73,5 +51,37 @@ namespace ExcelJoin.Providers.Epplus
             return sheetItem;
         }
 
+        /// <summary>
+        /// 从第一行开始，当有一行 每一列都有数据时 返回这一行Index
+        /// 如果有列名，返回列名集合
+        /// </summary>
+        /// <returns></returns>
+        private (int dataIndex, List<Column> titleList) DetectData(bool headTitle = false)
+        {
+            List<Column> titleList = headTitle ? new List<Column>() : null;
+            for (int ri = 1; ri <= sheet.Dimension.Rows; ri++)
+            {
+                var fullRow = true;
+                for (int ci = 1; ci <= sheet.Dimension.Columns; ci++)
+                {
+                    var cellValue = sheet.GetValue(ri, ci);
+                    if (cellValue == null)
+                    {
+                        //标记这行不行，退出列循环
+                        fullRow = false;
+                        break;
+                    }
+                    //cellValue不为null，有列名
+                    titleList?.Add(new Column {Name=cellValue.ToString() });
+                }
+                if (fullRow)
+                {
+                    //如果有列名，index 前进1行
+                    if (headTitle) return (ri + 1, titleList);
+                    return (ri, null);
+                }
+            }
+            return (0,null); //没有完整的一行
+        }
     }
 }
