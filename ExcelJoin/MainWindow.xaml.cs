@@ -59,18 +59,20 @@ namespace ExcelJoin
             if (selectIndex == -1) { Debug.WriteLine("选择为null"); return; }
             if (select == this.SelectSheet1)
             {
-                sheet1Pos = selectIndex+1;
+                sheet1Pos = selectIndex + 1;
             }
             else if (select == this.SelectSheet2)
             {
-                sheet2Pos = selectIndex+1;
+                sheet2Pos = selectIndex + 1;
             }
         }
 
         private void btnJoin_Click(object sender, RoutedEventArgs e)
         {
-            var sp = new SheetProvider(book1.Book.Worksheets[sheet1Pos], true);
-            var sp2 = new SheetProvider(book1.Book.Worksheets[sheet2Pos], true);
+            bool headTitle1 = CbHeadTitle1.IsChecked == true,
+                headTitle2 = CbHeadTitle2.IsChecked == true;
+            var sp = new SheetProvider(book1.Book.Worksheets[sheet1Pos], headTitle1, CbHeadColSpan1.IsChecked == true);
+            var sp2 = new SheetProvider(book1.Book.Worksheets[sheet2Pos], headTitle2, CbHeadColSpan2.IsChecked == true);
             var outPath = InputPath3.Text;
             var sheetName = inputSheetName.Text;
             int col1, col2;
@@ -81,7 +83,7 @@ namespace ExcelJoin
             var sheet1 = sp.Get(col1);
             var sheet2 = sp2.Get(col2);
             JoinAction action = new JoinAction();
-            action.Export(sheet1, sheet2, outPath, sheetName,true);
+            action.Export(sheet1, sheet2, outPath, sheetName, headTitle1,headTitle2);
         }
 
         /// <summary>
@@ -118,6 +120,29 @@ namespace ExcelJoin
             });
         }
 
+        private void CbHeadTitle_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender == this.CbHeadTitle1)
+            {
+                this.CbHeadColSpan1.IsEnabled = false;
+            }else if (sender==this.CbHeadTitle2)
+            {
+                this.CbHeadColSpan2.IsEnabled = false;
+            }
+        }
+
+        private void CbHeadTitle_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender == this.CbHeadTitle1)
+            {
+                this.CbHeadColSpan1.IsEnabled = true;
+            }
+            else if (sender == this.CbHeadTitle2)
+            {
+                this.CbHeadColSpan2.IsEnabled = true;
+            }
+        }
+
         private void btnChoose1_Click(object sender, RoutedEventArgs e)
         {
             if (openFileDialog.ShowDialog(this) != true) { return; }
@@ -136,7 +161,7 @@ namespace ExcelJoin
             var workbook = new Workbook(new FileInfo(fileName));
             var bp = new BookProvider(workbook.Book, true);
             var bookItem = bp.GetSimple();
-            ComboBox select=null;
+            ComboBox select = null;
             switch (ins)
             {
                 case ComboBoxIns.ComboBox1:
@@ -165,6 +190,6 @@ namespace ExcelJoin
 
     enum ComboBoxIns
     {
-        ComboBox1,ComboBox2
+        ComboBox1, ComboBox2
     }
 }

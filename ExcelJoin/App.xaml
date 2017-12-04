@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:ExcelJoin"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style TargetType="Button" x:Key="btn">
+        </Style> 
     </Application.Resources>
 </Application>

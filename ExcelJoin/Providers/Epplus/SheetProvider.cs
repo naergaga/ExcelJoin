@@ -12,11 +12,13 @@ namespace ExcelJoin.Providers.Epplus
     {
         private ExcelWorksheet sheet;
         private bool headTitle = false;
+        private bool detectColSpan = false;
 
-        public SheetProvider(ExcelWorksheet sheet, bool headTitle = false)
+        public SheetProvider(ExcelWorksheet sheet, bool headTitle = false, bool detectColSpan=true)
         {
             this.sheet = sheet;
             this.headTitle = headTitle;
+            this.detectColSpan = detectColSpan;
         }
 
         public Sheet GetSimple()
@@ -29,9 +31,14 @@ namespace ExcelJoin.Providers.Epplus
         {
             var sheetItem = new Sheet { Name = sheet.Name, Rows = new List<Row>() };
             var colLength = sheet.Dimension.Columns;
-            var a = DetectData(headTitle);
-            int rowIndex = a.dataIndex;
-            sheetItem.Columns = a.titleList;
+            int rowIndex;
+            if (detectColSpan || headTitle)
+            {
+                var a = DetectData(headTitle);
+                rowIndex = a.dataIndex;
+                sheetItem.Columns = a.titleList;
+            }
+            else { rowIndex = 1; }
 
             //获取每一行
             var rowNum = sheet.Dimension.Rows;
@@ -72,7 +79,7 @@ namespace ExcelJoin.Providers.Epplus
                         break;
                     }
                     //cellValue不为null，有列名
-                    titleList?.Add(new Column {Name=cellValue.ToString() });
+                    titleList?.Add(new Column { Name = cellValue.ToString() });
                 }
                 if (fullRow)
                 {
@@ -82,7 +89,7 @@ namespace ExcelJoin.Providers.Epplus
                 }
                 titleList?.Clear();
             }
-            return (0,null); //没有完整的一行
+            return (0, null); //没有完整的一行
         }
     }
 }

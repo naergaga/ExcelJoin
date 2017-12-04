@@ -16,7 +16,7 @@ namespace ExcelJoin.Actions
 
         }
 
-        public void Export(Sheet sheet1, Sheet sheet2, string outpath, string sheetName, bool headTitle = false)
+        public void Export(Sheet sheet1, Sheet sheet2, string outpath, string sheetName, bool headTitle1 = false, bool headTitle2 = false)
         {
             var newFile = new FileInfo(outpath);
             if (newFile.Exists)
@@ -36,20 +36,27 @@ namespace ExcelJoin.Actions
 
                 int rowIndex = 1;
                 //write column title
-                if (headTitle)
+                int colIndex = 1;
+                if (headTitle1)
                 {
-                    var colIndex = 1;
-                    for (int i = 0; i < sheet1.Columns.Count; i++,colIndex++)
+                    for (int i = 0; i < sheet1.Columns.Count; i++, colIndex++)
                     {
                         worksheet.Cells[rowIndex, colIndex].Value = sheet1.Columns[i].Name;
                     }
+                }
+                if (headTitle2)
+                {
                     for (int i = 0; i < sheet2.Columns.Count; i++, colIndex++)
                     {
                         worksheet.Cells[rowIndex, colIndex].Value = sheet2.Columns[i].Name;
                     }
-
-                    rowIndex+=1;
                 }
+
+                if (headTitle1 || headTitle2)
+                {
+                    rowIndex += 1;
+                }
+
                 //write column data
                 for (int i = 0; i < list.Count; i++, rowIndex++)
                 {
