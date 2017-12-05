@@ -6,7 +6,7 @@ using System.IO;
 namespace ExcelJoin.Test.ExcelData
 {
     [TestClass]
-    public class UnitTest1
+    public class ColSpanTest
     {
         [TestMethod]
         public void TestColSpan()

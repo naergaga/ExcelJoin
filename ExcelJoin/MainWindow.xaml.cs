@@ -72,7 +72,7 @@ namespace ExcelJoin
             bool headTitle1 = CbHeadTitle1.IsChecked == true,
                 headTitle2 = CbHeadTitle2.IsChecked == true;
             var sp = new SheetProvider(book1.Book.Worksheets[sheet1Pos], headTitle1, CbHeadColSpan1.IsChecked == true);
-            var sp2 = new SheetProvider(book1.Book.Worksheets[sheet2Pos], headTitle2, CbHeadColSpan2.IsChecked == true);
+            var sp2 = new SheetProvider(book2.Book.Worksheets[sheet2Pos], headTitle2, CbHeadColSpan2.IsChecked == true);
             var outPath = InputPath3.Text;
             var sheetName = inputSheetName.Text;
             int col1, col2;
@@ -111,9 +111,9 @@ namespace ExcelJoin
             Thread.Sleep(1000);
             Dispatcher.Invoke(() =>
             {
-                this.InputPath1.Text = "./files/xlsx/class1.xlsx";
-                this.InputPath2.Text = "./files/xlsx/class1.xlsx";
-                this.InputPath3.Text = "./files/xlsx/test.xlsx";
+                this.InputPath1.Text = @"F:\work\code\2017\11\csharp\ExcelJoin\ExcelJoin.Test\bin\Debug\files\xlsx\查岗_test.xlsx";
+                this.InputPath2.Text = @"F:\work\code\2017\11\csharp\ExcelJoin\ExcelJoin.Test\bin\Debug\files\xlsx\查岗12_05.xlsx";
+                this.InputPath3.Text = @"F:\work\code\2017\11\csharp\ExcelJoin\ExcelJoin.Test\bin\Debug\files\xlsx\test.xlsx";
                 this.InputCol1.Text = "1";
                 this.InputCol2.Text = "1";
                 this.inputSheetName.Text = "result";
@@ -184,7 +184,7 @@ namespace ExcelJoin
         {
             if (openFileDialog.ShowDialog(this) != true) { return; }
             UpdateSelect(ComboBoxIns.ComboBox2, openFileDialog.FileName);
-            this.InputPath1.Text = openFileDialog.FileName;
+            this.InputPath2.Text = openFileDialog.FileName;
         }
     }
 

@@ -8,14 +8,6 @@
         mc:Ignorable="d"
         Title="Excel Join" Height="350" Width="800"
         Name="MainWindow1">
-    <Window.Resources>
-
-        <!--<DataTemplate DataType="{x:Type model:Sheet}" x:Key="tmpSelect">
-            <Grid>
-                <TextBlock Text="{Binding Name}"></TextBlock>
-            </Grid>
-        </DataTemplate>-->
-    </Window.Resources>
     <Grid>
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
@@ -49,7 +41,7 @@
                 <DockPanel Width="300">
                     <Button
                     Name="btnChoose2" 
-                    Click="btnChoose1_Click"
+                    Click="btnChoose2_Click"
                     DockPanel.Dock="Right"
                     Style="{StaticResource btn}">选择workbook2</Button>
                     <TextBox Name="InputPath2" 

@@ -52,7 +52,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExcelData\UnitTest1.cs" />
+    <Compile Include="ExcelData\ColSpanTest.cs" />
+    <Compile Include="ExcelData\RandomColTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Provider\BookProviderTest.cs" />
   </ItemGroup>

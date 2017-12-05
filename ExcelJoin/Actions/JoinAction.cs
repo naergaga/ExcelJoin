@@ -9,11 +9,19 @@ using System.Threading.Tasks;
 
 namespace ExcelJoin.Actions
 {
+    public class ExportConfig {
+        public bool DateTimeIsHourMinute { get; set; }
+    }
+
     public class JoinAction
     {
-        public JoinAction()
-        {
+        public ExportConfig Config { get; set; } = new ExportConfig { DateTimeIsHourMinute = true };
 
+        public JoinAction() { }
+
+        public JoinAction(ExportConfig config)
+        {
+            Config = config;
         }
 
         public void Export(Sheet sheet1, Sheet sheet2, string outpath, string sheetName, bool headTitle1 = false, bool headTitle2 = false)
@@ -48,7 +56,7 @@ namespace ExcelJoin.Actions
                 {
                     for (int i = 0; i < sheet2.Columns.Count; i++, colIndex++)
                     {
-                        worksheet.Cells[rowIndex, colIndex].Value = sheet2.Columns[i].Name;
+                        worksheet.Cells[rowIndex, colIndex].Value =sheet2.Columns[i].Name;
                     }
                 }
 
@@ -67,17 +75,38 @@ namespace ExcelJoin.Actions
 
                     for (int i2 = 0; i2 < data1.Count; i2++, col++)
                     {
-                        worksheet.Cells[rowIndex, col].Value = data1[i2].Value;
+                        SetCell(worksheet.Cells[rowIndex, col], data1[i2].Value);
                     }
 
                     for (int i2 = 0; i2 < data2.Count; i2++, col++)
                     {
-                        worksheet.Cells[rowIndex, col].Value = data2[i2].Value;
+                        SetCell(worksheet.Cells[rowIndex, col], data2[i2].Value);
                     }
 
                 }
                 package.Save();
             }
         }
+
+        private void SetCell(ExcelRange cellRange, object rawValue)
+        {
+            cellRange.Value = rawValue;
+
+            var type = rawValue.GetType();
+            if (type == typeof(DateTime) && Config.DateTimeIsHourMinute)
+            {
+                cellRange.Style.Numberformat.Format = "h:mm";
+            }
+        }
+
+        //private object GetValue(Object rawValue)
+        //{
+        //    var type = rawValue.GetType();
+        //    if (type == typeof(DateTime) && Config.DateTimeIsHourMinute )
+        //    {
+        //        return ((DateTime)rawValue).TimeOfDay;
+        //    }
+        //    return rawValue;
+        //}
     }
 }
