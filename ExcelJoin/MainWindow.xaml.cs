@@ -34,7 +34,7 @@ namespace ExcelJoin
         private int sheet1Pos, sheet2Pos;
         private Book bookItem1, bookItem2;
         private OpenFileDialog openFileDialog;
-        private ExportConfig config = new ExportConfig();
+        private ExportConfig config = new ExportConfig { DateTimeIsHourMinute = true };
 
         public delegate void WindowLoaded();
 
@@ -84,7 +84,7 @@ namespace ExcelJoin
             var sheet1 = sp.Get(col1);
             var sheet2 = sp2.Get(col2);
             JoinAction action = new JoinAction(config);
-            action.Export(sheet1, sheet2, outPath, sheetName, headTitle1,headTitle2);
+            action.Export(sheet1, sheet2, outPath, sheetName, headTitle1, headTitle2);
         }
 
         /// <summary>
@@ -126,7 +126,8 @@ namespace ExcelJoin
             if (sender == this.CbHeadTitle1)
             {
                 this.CbHeadColSpan1.IsEnabled = false;
-            }else if (sender==this.CbHeadTitle2)
+            }
+            else if (sender == this.CbHeadTitle2)
             {
                 this.CbHeadColSpan2.IsEnabled = false;
             }
@@ -149,10 +150,12 @@ namespace ExcelJoin
             if (sender == this.CbTimeFormat1)
             {
                 this.CbTimeFormat2.IsChecked = false;
-            }else if (sender == this.CbTimeFormat2) {
+            }
+            else if (sender == this.CbTimeFormat2)
+            {
                 this.CbTimeFormat1.IsChecked = false;
             }
-            this.config.DateTimeIsHourMinute = this.CbTimeFormat1.IsChecked==true;
+            this.config.DateTimeIsHourMinute = this.CbTimeFormat1.IsChecked == true;
         }
 
         private void CheckBox_Unchecked(object sender, RoutedEventArgs e)

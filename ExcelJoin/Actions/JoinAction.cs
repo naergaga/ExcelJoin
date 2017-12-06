@@ -99,7 +99,8 @@ namespace ExcelJoin.Actions
             {
                 if (Config.DateTimeIsHourMinute)
                     cellRange.Style.Numberformat.Format = "h:mm";
-                cellRange.Style.Numberformat.Format = "yyyy/m/d h:mm";
+                else
+                    cellRange.Style.Numberformat.Format = "yyyy/m/d h:mm";
             }
         }
 
