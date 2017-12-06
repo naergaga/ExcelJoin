@@ -80,9 +80,20 @@
                 Name="btnJoin"
                 Click="btnJoin_Click">生成</Button>
             </StackPanel>
-            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="3" Grid.ColumnSpan="3">
-                <TextBlock Name="TextLog" TextWrapping="Wrap"></TextBlock>
-            </ScrollViewer>
+            <StackPanel Orientation="Horizontal">
+                <Label VerticalAlignment="Center">时间格式：</Label>
+                <StackPanel>
+                    <Label>h:mm</Label>
+                    <CheckBox Name="CbTimeFormat1" 
+                              IsChecked="True"
+                              Click="CheckBox_Click"
+                              Unchecked="CheckBox_Unchecked" HorizontalAlignment="Center"></CheckBox>
+                </StackPanel>
+                <StackPanel>
+                    <Label>yyyy/m/d h:mm</Label>
+                    <CheckBox Name="CbTimeFormat2" Click="CheckBox_Click" Unchecked="CheckBox_Unchecked" HorizontalAlignment="Center"></CheckBox>
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

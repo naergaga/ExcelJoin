@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace ExcelJoin.Actions
 {
-    public class ExportConfig {
+    public class ExportConfig
+    {
         public bool DateTimeIsHourMinute { get; set; }
     }
 
@@ -56,7 +57,7 @@ namespace ExcelJoin.Actions
                 {
                     for (int i = 0; i < sheet2.Columns.Count; i++, colIndex++)
                     {
-                        worksheet.Cells[rowIndex, colIndex].Value =sheet2.Columns[i].Name;
+                        worksheet.Cells[rowIndex, colIndex].Value = sheet2.Columns[i].Name;
                     }
                 }
 
@@ -90,12 +91,15 @@ namespace ExcelJoin.Actions
 
         private void SetCell(ExcelRange cellRange, object rawValue)
         {
+            if (rawValue == null) return;
             cellRange.Value = rawValue;
 
             var type = rawValue.GetType();
-            if (type == typeof(DateTime) && Config.DateTimeIsHourMinute)
+            if (type == typeof(DateTime))
             {
-                cellRange.Style.Numberformat.Format = "h:mm";
+                if (Config.DateTimeIsHourMinute)
+                    cellRange.Style.Numberformat.Format = "h:mm";
+                cellRange.Style.Numberformat.Format = "yyyy/m/d h:mm";
             }
         }
 

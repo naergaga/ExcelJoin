@@ -18,15 +18,15 @@ namespace ExcelJoin.Test.ExcelData
         public void ExportRandomColBook()
         {
             var file1 = new FileInfo("./files/xlsx/查岗12_05.xlsx");
-            var outFilePath = "./files/xlsx/查岗_test.xlsx";
+            var outFilePath = "./files/xlsx/查岗_test1.xlsx";
 
             if (File.Exists(outFilePath)) { File.Delete(outFilePath); }
             var outFile = new FileInfo(outFilePath);
 
             int targetCol = 1;
-            int targetSheetIndex = 2;
+            int targetSheetIndex = 1;
             Sheet sheet = null;
-            bool headTitle = true;
+            bool headTitle = false;
 
             string colName = null;
             List<string> dataList = new List<string>();
@@ -37,7 +37,8 @@ namespace ExcelJoin.Test.ExcelData
                 var sp = new SheetProvider(worksheet, headTitle);
                 sheet = sp.Get(targetCol);
                 dataList = sheet.Rows.Select(t => t.Identity).ToList();
-                colName = sheet.Columns[targetCol].Name;
+                if (headTitle)
+                    colName = sheet.Columns[targetCol].Name;
             }
 
             using (ExcelPackage package = new ExcelPackage(outFile))
@@ -48,11 +49,11 @@ namespace ExcelJoin.Test.ExcelData
 
                 if (headTitle)
                 {
-                    worksheet.Cells[rowIndex, 1].Value = sheet.Columns[targetCol-1].Name;
+                    worksheet.Cells[rowIndex, 1].Value = sheet.Columns[targetCol - 1].Name;
                     rowIndex++;
                 }
 
-                for (int i = 1; i <= length; i++,rowIndex++)
+                for (int i = 1; i <= length; i++, rowIndex++)
                 {
                     worksheet.Cells[rowIndex, 1].Value = GetRandomFromList(dataList);
                 }

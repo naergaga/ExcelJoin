@@ -34,6 +34,7 @@ namespace ExcelJoin
         private int sheet1Pos, sheet2Pos;
         private Book bookItem1, bookItem2;
         private OpenFileDialog openFileDialog;
+        private ExportConfig config = new ExportConfig();
 
         public delegate void WindowLoaded();
 
@@ -82,7 +83,7 @@ namespace ExcelJoin
             }
             var sheet1 = sp.Get(col1);
             var sheet2 = sp2.Get(col2);
-            JoinAction action = new JoinAction();
+            JoinAction action = new JoinAction(config);
             action.Export(sheet1, sheet2, outPath, sheetName, headTitle1,headTitle2);
         }
 
@@ -111,7 +112,7 @@ namespace ExcelJoin
             Thread.Sleep(1000);
             Dispatcher.Invoke(() =>
             {
-                this.InputPath1.Text = @"F:\work\code\2017\11\csharp\ExcelJoin\ExcelJoin.Test\bin\Debug\files\xlsx\查岗_test.xlsx";
+                this.InputPath1.Text = @"F:\work\code\2017\11\csharp\ExcelJoin\ExcelJoin.Test\bin\Debug\files\xlsx\查岗_test1.xlsx";
                 this.InputPath2.Text = @"F:\work\code\2017\11\csharp\ExcelJoin\ExcelJoin.Test\bin\Debug\files\xlsx\查岗12_05.xlsx";
                 this.InputPath3.Text = @"F:\work\code\2017\11\csharp\ExcelJoin\ExcelJoin.Test\bin\Debug\files\xlsx\test.xlsx";
                 this.InputCol1.Text = "1";
@@ -140,6 +141,29 @@ namespace ExcelJoin
             else if (sender == this.CbHeadTitle2)
             {
                 this.CbHeadColSpan2.IsEnabled = true;
+            }
+        }
+
+        private void CheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender == this.CbTimeFormat1)
+            {
+                this.CbTimeFormat2.IsChecked = false;
+            }else if (sender == this.CbTimeFormat2) {
+                this.CbTimeFormat1.IsChecked = false;
+            }
+            this.config.DateTimeIsHourMinute = this.CbTimeFormat1.IsChecked==true;
+        }
+
+        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender == this.CbTimeFormat1)
+            {
+                this.CbTimeFormat2.IsChecked = true;
+            }
+            else if (sender == this.CbTimeFormat2)
+            {
+                this.CbTimeFormat1.IsChecked = true;
             }
         }
 
