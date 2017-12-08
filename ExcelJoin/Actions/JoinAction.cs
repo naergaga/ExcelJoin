@@ -25,6 +25,12 @@ namespace ExcelJoin.Actions
             Config = config;
         }
 
+        class ResultRow
+        {
+            public List<ColumnData> Data1 { get; set; }
+            public List<ColumnData> Data2 { get; set; }
+        }
+
         public void Export(Sheet sheet1, Sheet sheet2, string outpath, string sheetName, bool headTitle1 = false, bool headTitle2 = false)
         {
             var newFile = new FileInfo(outpath);
@@ -33,10 +39,21 @@ namespace ExcelJoin.Actions
                 newFile.Delete();
                 newFile = new FileInfo(outpath);
             }
-            var query = from s1row in sheet1.Rows
-                        join s2row in sheet2.Rows
-                        on s1row.Identity equals s2row.Identity
-                        select new { Identity = s1row.Identity, Data1 = s1row.Data, Data2 = s2row.Data };
+            //var query = from s1row in sheet1.Rows
+            //            join s2row in sheet2.Rows
+            //            on s1row.Identity equals s2row.Identity
+            //            select new { Identity = s1row.Identity, Data1 = s1row.Data, Data2 = s2row.Data };
+            //TODO: 重名
+            //TODO: LEFT JOIN or INNER JOIN
+            var query = sheet1.Rows.Select(s1row =>
+            {
+                return new ResultRow
+                {
+                    Data1 = s1row.Data,
+                    Data2 = sheet2.Rows.FirstOrDefault(t => s1row.Identity == t.Identity)?.Data
+                };
+            });
+
             var list = query.ToList();
 
             using (var package = new ExcelPackage(newFile))
@@ -79,10 +96,11 @@ namespace ExcelJoin.Actions
                         SetCell(worksheet.Cells[rowIndex, col], data1[i2].Value);
                     }
 
-                    for (int i2 = 0; i2 < data2.Count; i2++, col++)
-                    {
-                        SetCell(worksheet.Cells[rowIndex, col], data2[i2].Value);
-                    }
+                    if (data2 != null)
+                        for (int i2 = 0; i2 < data2.Count; i2++, col++)
+                        {
+                            SetCell(worksheet.Cells[rowIndex, col], data2[i2].Value);
+                        }
 
                 }
                 package.Save();

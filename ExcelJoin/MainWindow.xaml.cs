@@ -77,7 +77,7 @@ namespace ExcelJoin
             var outPath = InputPath3.Text;
             var sheetName = inputSheetName.Text;
             int col1, col2;
-            if (!int.TryParse(InputCol1.Text, out col1) || !int.TryParse(InputCol1.Text, out col2))
+            if (!int.TryParse(InputCol1.Text, out col1) || !int.TryParse(InputCol2.Text, out col2))
             {
                 return;
             }
@@ -112,11 +112,12 @@ namespace ExcelJoin
             Thread.Sleep(1000);
             Dispatcher.Invoke(() =>
             {
-                this.InputPath1.Text = @"F:\work\code\2017\11\csharp\ExcelJoin\ExcelJoin.Test\bin\Debug\files\xlsx\查岗_test1.xlsx";
-                this.InputPath2.Text = @"F:\work\code\2017\11\csharp\ExcelJoin\ExcelJoin.Test\bin\Debug\files\xlsx\查岗12_05.xlsx";
-                this.InputPath3.Text = @"F:\work\code\2017\11\csharp\ExcelJoin\ExcelJoin.Test\bin\Debug\files\xlsx\test.xlsx";
-                this.InputCol1.Text = "1";
-                this.InputCol2.Text = "1";
+                var dir = @"C:\Users\Administrator\Desktop\";
+                this.InputPath1.Text = dir+"vip.xlsx";
+                this.InputPath2.Text = dir + "result.xlsx"; 
+                this.InputPath3.Text = dir + "test.xlsx";
+                this.InputCol1.Text = "2";
+                this.InputCol2.Text = "3";
                 this.inputSheetName.Text = "result";
             });
         }
