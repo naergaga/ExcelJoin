@@ -8,7 +8,7 @@ namespace ExcelJoin.Models
 {
     public class Row
     {
-        public Object Identity { get; set; }
+        public dynamic Identity { get; set; }
         public List<ColumnData> Data { get; set; }
     }
 }

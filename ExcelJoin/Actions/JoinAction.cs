@@ -1,4 +1,4 @@
-﻿using ExcelJoin.Models;
+using ExcelJoin.Models;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -50,7 +50,7 @@ namespace ExcelJoin.Actions
                 return new ResultRow
                 {
                     Data1 = s1row.Data,
-                    Data2 = sheet2.Rows.FirstOrDefault(t => s1row.Identity == t.Identity)?.Data
+                    Data2 = sheet2.Rows.FirstOrDefault(t => s1row.Identity==t.Identity)?.Data
                 };
             });
 

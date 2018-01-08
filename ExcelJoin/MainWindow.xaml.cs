@@ -32,7 +32,6 @@ namespace ExcelJoin
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Workbook book1, book2;
         private int sheet1Pos, sheet2Pos;
         private Book bookItem1, bookItem2;
         private OpenFileDialog openFileDialog;
@@ -43,16 +42,9 @@ namespace ExcelJoin
         public MainWindow()
         {
             openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Excel文件 (*.xlsx)|*.xlsx";
+            openFileDialog.Filter = "Excel文件 (*.xlsx,*.xls)|*.xlsx;*.xls";
 
             InitializeComponent();
-
-            //后台线程
-            var _thread1 = new Thread(MainWindow1_Loaded);
-            _thread1.IsBackground = true;
-            _thread1.Start();
-            //var load1 = new WindowLoaded(MainWindow1_Loaded);
-            //Dispatcher.BeginInvoke(load1);
         }
 
         private void SelectSheet_Selected(object sender, RoutedEventArgs e)
@@ -74,19 +66,11 @@ namespace ExcelJoin
         {
             bool headTitle1 = CbHeadTitle1.IsChecked == true,
                 headTitle2 = CbHeadTitle2.IsChecked == true;
-            var sp = new SheetProvider(book1.Book.Worksheets[sheet1Pos], headTitle1, CbHeadColSpan1.IsChecked == true);
-            var sp2 = new SheetProvider(book2.Book.Worksheets[sheet2Pos], headTitle2, CbHeadColSpan2.IsChecked == true);
-            var outPath = InputPath3.Text;
-            var sheetName = inputSheetName.Text;
-            int col1, col2;
-            if (!int.TryParse(InputCol1.Text, out col1) || !int.TryParse(InputCol2.Text, out col2))
-            {
-                return;
-            }
-            var sheet1 = sp.Get(col1);
-            var sheet2 = sp2.Get(col2);
+            var sp = new EDRSheetProvider();
+            var sheet1 = sp.Get(this.InputPath1.Text, sheet1Pos, Int32.Parse(this.InputCol1.Text));
+            var sheet2 = sp.Get(this.InputPath2.Text, sheet2Pos, Int32.Parse(this.InputCol2.Text));
             JoinAction action = new JoinAction(config);
-            action.Export(sheet1, sheet2, outPath, sheetName, headTitle1, headTitle2);
+            action.Export(sheet1, sheet2, InputPath3.Text, inputSheetName.Text, headTitle1, headTitle2);
         }
 
         /// <summary>
@@ -104,24 +88,6 @@ namespace ExcelJoin
             {
                 UpdateSelect(ComboBoxIns.ComboBox2, InputPath2.Text);
             }
-        }
-
-        /// <summary>
-        /// 启动后 两秒 开始执行
-        /// </summary>
-        private void MainWindow1_Loaded()
-        {
-            Thread.Sleep(1000);
-            Dispatcher.Invoke(() =>
-            {
-                var dir = @"C:\Users\Administrator\Desktop\";
-                this.InputPath1.Text = dir+"vip.xlsx";
-                this.InputPath2.Text = dir + "result.xlsx"; 
-                this.InputPath3.Text = dir + "test.xlsx";
-                this.InputCol1.Text = "2";
-                this.InputCol2.Text = "3";
-                this.inputSheetName.Text = "result";
-            });
         }
 
         private void CbHeadTitle_Checked(object sender, RoutedEventArgs e)
@@ -184,7 +150,6 @@ namespace ExcelJoin
         private void btnChoose1_Click(object sender, RoutedEventArgs e)
         {
             if (openFileDialog.ShowDialog(this) != true) { return; }
-            UpdateSelect(ComboBoxIns.ComboBox1, openFileDialog.FileName);
             this.InputPath1.Text = openFileDialog.FileName;
         }
 
@@ -216,14 +181,13 @@ namespace ExcelJoin
                 default:
                     break;
             }
-            this.tbBookInfo.Text = InfoProvider.GetBook(bookItem);
+            this.tbBookInfo.Text += InfoProvider.GetBook(bookItem)+'\n';
             select.ItemsSource = bookItem.Sheets;
         }
 
         private void btnChoose2_Click(object sender, RoutedEventArgs e)
         {
             if (openFileDialog.ShowDialog(this) != true) { return; }
-            UpdateSelect(ComboBoxIns.ComboBox2, openFileDialog.FileName);
             this.InputPath2.Text = openFileDialog.FileName;
         }
     }

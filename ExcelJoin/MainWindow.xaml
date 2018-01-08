@@ -9,7 +9,11 @@
         Title="Excel Join" Height="350" Width="800"
         Name="MainWindow1">
     <Grid>
-        <StackPanel Orientation="Vertical">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical" Grid.Row="0">
             <StackPanel Orientation="Horizontal">
                 <DockPanel Width="300">
                     <Button
@@ -94,10 +98,10 @@
                     <CheckBox Name="CbTimeFormat2" Click="CheckBox_Click" Unchecked="CheckBox_Unchecked" HorizontalAlignment="Center"></CheckBox>
                 </StackPanel>
             </StackPanel>
-            <StackPanel>
-                <TextBlock Name="tbBookInfo" TextWrapping="Wrap"></TextBlock>
-            </StackPanel>
         </StackPanel>
+        <ScrollViewer Grid.Row="1">
+            <TextBlock Name="tbBookInfo" TextWrapping="Wrap"></TextBlock>
+        </ScrollViewer>
     </Grid>
 </Window>
 <!--https://docs.microsoft.com/en-us/dotnet/framework/wpf/advanced/layout-->

@@ -11,9 +11,10 @@ namespace ExcelJoin.Providers.EDR
 {
     public class EDRSheetProvider
     {
-        public Sheet Get(string path, int sheetIndex, int identityCol)
+        public Sheet Get(string path, int sheetNum, int colNum)
         {
             Sheet sheet = null;
+            int sheetIndex = sheetNum - 1,identityCol = colNum-1;
             var stream = File.Open(path, FileMode.Open);
             using (var reader = ExcelReaderFactory.CreateReader(stream))
             {
