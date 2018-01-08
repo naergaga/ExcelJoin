@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using OfficeOpenXml;
@@ -29,7 +29,7 @@ namespace ExcelJoin.Test.ExcelData
             bool headTitle = false;
 
             string colName = null;
-            List<string> dataList = new List<string>();
+            List<object> dataList = new List<object>();
             using (ExcelPackage package = new ExcelPackage(file1))
             {
                 var worksheet = package.Workbook.Worksheets[targetSheetIndex];
@@ -61,7 +61,7 @@ namespace ExcelJoin.Test.ExcelData
             }
         }
 
-        private string GetRandomFromList(List<string> dataList)
+        private object GetRandomFromList(List<object> dataList)
         {
             var index = random.Next(dataList.Count);
             var value = dataList[index];

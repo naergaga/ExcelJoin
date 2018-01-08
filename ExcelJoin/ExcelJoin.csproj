@@ -38,8 +38,12 @@
     <Reference Include="EPPlus, Version=4.1.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <HintPath>..\packages\EPPlus.4.1.1\lib\net40\EPPlus.dll</HintPath>
     </Reference>
+    <Reference Include="ExcelDataReader, Version=3.3.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.3.3.0\lib\net45\ExcelDataReader.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -60,9 +64,12 @@
     </ApplicationDefinition>
     <Compile Include="Actions\JoinAction.cs" />
     <Compile Include="Models\Column.cs" />
+    <Compile Include="Providers\EDR\EDRSheetProvider.cs" />
+    <Compile Include="Providers\EDR\EDRBookProvider.cs" />
     <Compile Include="Providers\Epplus\BookProvider.cs" />
     <Compile Include="Providers\Epplus\SheetProvider.cs" />
     <Compile Include="Providers\Epplus\Workbook.cs" />
+    <Compile Include="Providers\InfoProvider.cs" />
     <Compile Include="Providers\ISheetProvider.cs" />
     <Compile Include="Providers\IBookProvider.cs" />
     <Page Include="MainWindow.xaml">

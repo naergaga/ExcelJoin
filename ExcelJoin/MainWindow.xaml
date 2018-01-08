@@ -1,4 +1,4 @@
-﻿<Window x:Class="ExcelJoin.MainWindow"
+<Window x:Class="ExcelJoin.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -66,7 +66,7 @@
 
             <StackPanel Orientation="Horizontal">
             <DockPanel Width="300">
-                <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Style="{StaticResource btn}">保存到</Button>
+                <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Style="{StaticResource btn}" Click="Button_Click">保存到</Button>
                 <TextBox Name="InputPath3" 
                          HorizontalAlignment="Stretch"/>
             </DockPanel>
@@ -93,6 +93,9 @@
                     <Label>yyyy/m/d h:mm</Label>
                     <CheckBox Name="CbTimeFormat2" Click="CheckBox_Click" Unchecked="CheckBox_Unchecked" HorizontalAlignment="Center"></CheckBox>
                 </StackPanel>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Name="tbBookInfo" TextWrapping="Wrap"></TextBlock>
             </StackPanel>
         </StackPanel>
     </Grid>

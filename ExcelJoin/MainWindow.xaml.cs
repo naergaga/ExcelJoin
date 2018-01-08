@@ -1,5 +1,7 @@
-﻿using ExcelJoin.Actions;
+using ExcelJoin.Actions;
 using ExcelJoin.Models;
+using ExcelJoin.Providers;
+using ExcelJoin.Providers.EDR;
 using ExcelJoin.Providers.Epplus;
 using Microsoft.Win32;
 using OfficeOpenXml;
@@ -41,7 +43,7 @@ namespace ExcelJoin
         public MainWindow()
         {
             openFileDialog = new OpenFileDialog();
-            openFileDialog.DefaultExt = "Excel文件(*.xlsx)";
+            openFileDialog.Filter = "Excel文件 (*.xlsx)|*.xlsx";
 
             InitializeComponent();
 
@@ -171,12 +173,21 @@ namespace ExcelJoin
             }
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Excel文件 (*.xlsx)|*.xlsx";
+            if (saveFileDialog.ShowDialog(this) != true) { return; }
+            this.InputPath3.Text = saveFileDialog.FileName;
+        }
+
         private void btnChoose1_Click(object sender, RoutedEventArgs e)
         {
             if (openFileDialog.ShowDialog(this) != true) { return; }
             UpdateSelect(ComboBoxIns.ComboBox1, openFileDialog.FileName);
             this.InputPath1.Text = openFileDialog.FileName;
         }
+
 
         /// <summary>
         /// 读取excel，读出Sheet集合，设置workbook,bookItem
@@ -186,25 +197,26 @@ namespace ExcelJoin
         /// <param name="fileName">要读取的excel文件</param>
         private void UpdateSelect(ComboBoxIns ins, string fileName)
         {
-            var workbook = new Workbook(new FileInfo(fileName));
-            var bp = new BookProvider(workbook.Book, true);
-            var bookItem = bp.GetSimple();
+            var bp = new EDRBookProvider();
+            if (!File.Exists(fileName)) { return; }
+            var bookItem = bp.GetSimple(fileName);
             ComboBox select = null;
             switch (ins)
             {
                 case ComboBoxIns.ComboBox1:
-                    book1 = workbook;
+                    //book1 = workbook;
                     bookItem1 = bookItem;
                     select = SelectSheet1;
                     break;
                 case ComboBoxIns.ComboBox2:
-                    book2 = workbook;
+                    //book2 = workbook;
                     bookItem2 = bookItem;
                     select = SelectSheet2;
                     break;
                 default:
                     break;
             }
+            this.tbBookInfo.Text = InfoProvider.GetBook(bookItem);
             select.ItemsSource = bookItem.Sheets;
         }
 
