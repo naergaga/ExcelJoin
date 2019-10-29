@@ -6,8 +6,11 @@
         xmlns:local="clr-namespace:ExcelJoin"
         xmlns:model="clr-namespace:ExcelJoin.Models"
         mc:Ignorable="d"
-        Title="Excel Join" Height="350" Width="800"
+        Title="Excel Join" Height="350" Width="750"
         Name="MainWindow1">
+    <Window.DataContext>
+        <local:MainWindowModel/>
+    </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -34,11 +37,9 @@
                 DisplayMemberPath="Name"
                 ></ComboBox>
                 <Label>标识列</Label>
-                <TextBox Grid.Column="1" Width="100" Name="InputCol1"/>
-                <Label>有标题合并</Label>
-                <CheckBox Name="CbHeadColSpan1"></CheckBox>
+                <TextBox Grid.Column="1" Width="100" Name="InputCol1" Text="{Binding ColumnIndex1}"/>
                 <Label>有列名</Label>
-                <CheckBox Checked="CbHeadTitle_Checked" Unchecked="CbHeadTitle_Unchecked" Name="CbHeadTitle1"></CheckBox>
+                <CheckBox Name="CbHeadTitle1" IsChecked="{Binding HeadTitle1}"></CheckBox>
             </StackPanel>
             
             <StackPanel Orientation="Horizontal">
@@ -61,11 +62,9 @@
                 DisplayMemberPath="Name"
                 ></ComboBox>
                 <Label>标识列</Label>
-                <TextBox Grid.Column="1" Width="100" Name="InputCol2"/>
-                <Label>有标题合并</Label>
-                <CheckBox Name="CbHeadColSpan2"></CheckBox>
+                <TextBox Grid.Column="1" Width="100" Name="InputCol2" Text="{Binding ColumnIndex2}"/>
                 <Label>有列名</Label>
-                <CheckBox Name="CbHeadTitle2" Checked="CbHeadTitle_Checked" Unchecked="CbHeadTitle_Unchecked"></CheckBox>
+                <CheckBox Name="CbHeadTitle2" IsChecked="{Binding HeadTitle2}"></CheckBox>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">

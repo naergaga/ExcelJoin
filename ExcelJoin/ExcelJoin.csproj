@@ -72,6 +72,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Actions\JoinAction.cs" />
+    <Compile Include="MainWindowModel.cs" />
     <Compile Include="Models\Column.cs" />
     <Compile Include="Providers\EDR\EDRSheetProvider.cs" />
     <Compile Include="Providers\EDR\EDRBookProvider.cs" />

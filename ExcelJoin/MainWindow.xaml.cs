@@ -36,6 +36,7 @@ namespace ExcelJoin
         private Book bookItem1, bookItem2;
         private OpenFileDialog openFileDialog;
         private ExportConfig config = new ExportConfig { DateTimeIsHourMinute = true };
+        private MainWindowModel DC => (MainWindowModel)DataContext;
 
         public delegate void WindowLoaded();
 
@@ -64,13 +65,11 @@ namespace ExcelJoin
 
         private void btnJoin_Click(object sender, RoutedEventArgs e)
         {
-            bool headTitle1 = CbHeadTitle1.IsChecked == true,
-                headTitle2 = CbHeadTitle2.IsChecked == true;
             var sp = new EDRSheetProvider();
-            var sheet1 = sp.Get(this.InputPath1.Text, sheet1Pos, Int32.Parse(this.InputCol1.Text));
-            var sheet2 = sp.Get(this.InputPath2.Text, sheet2Pos, Int32.Parse(this.InputCol2.Text));
+            var sheet1 = sp.Get(this.InputPath1.Text, sheet1Pos,DC.ColumnIndex1);
+            var sheet2 = sp.Get(this.InputPath2.Text, sheet2Pos, DC.ColumnIndex2);
             JoinAction action = new JoinAction(config);
-            action.Export(sheet1, sheet2, InputPath3.Text, inputSheetName.Text, headTitle1, headTitle2);
+            action.Export(sheet1, sheet2, InputPath3.Text, inputSheetName.Text, DC.HeadTitle1, DC.HeadTitle2);
         }
 
         /// <summary>
@@ -87,30 +86,6 @@ namespace ExcelJoin
             else if (sender == InputPath2)
             {
                 UpdateSelect(ComboBoxIns.ComboBox2, InputPath2.Text);
-            }
-        }
-
-        private void CbHeadTitle_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender == this.CbHeadTitle1)
-            {
-                this.CbHeadColSpan1.IsEnabled = false;
-            }
-            else if (sender == this.CbHeadTitle2)
-            {
-                this.CbHeadColSpan2.IsEnabled = false;
-            }
-        }
-
-        private void CbHeadTitle_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (sender == this.CbHeadTitle1)
-            {
-                this.CbHeadColSpan1.IsEnabled = true;
-            }
-            else if (sender == this.CbHeadTitle2)
-            {
-                this.CbHeadColSpan2.IsEnabled = true;
             }
         }
 
@@ -152,7 +127,6 @@ namespace ExcelJoin
             if (openFileDialog.ShowDialog(this) != true) { return; }
             this.InputPath1.Text = openFileDialog.FileName;
         }
-
 
         /// <summary>
         /// 读取excel，读出Sheet集合，设置workbook,bookItem
