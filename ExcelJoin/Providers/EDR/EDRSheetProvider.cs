@@ -14,37 +14,43 @@ namespace ExcelJoin.Providers.EDR
         public Sheet Get(string path, int sheetNum, int colNum)
         {
             Sheet sheet = null;
-            int sheetIndex = sheetNum - 1,identityCol = colNum-1;
+            int sheetIndex = sheetNum - 1, identityCol = colNum - 1;
             var stream = File.Open(path, FileMode.Open);
             using (var reader = ExcelReaderFactory.CreateReader(stream))
             {
+                var dataSet = reader.AsDataSet();
+                var table = dataSet.Tables[sheetIndex];
                 int index = 0;
 
-                while (reader.NextResult() && !(index == sheetIndex)) { index++; }
-                sheet = new Sheet { Name = reader.Name, Index = index++, Columns = new List<Column>(), Rows = new List<Row>() };
-                object obj = null;
-                string valueStr = null;
-                bool titleGot=false;
-                while (reader.Read())
+                while (reader.NextResult() && !(index == sheetIndex))
                 {
+                    index++;
+                }
+                sheet = new Sheet { Name = reader.Name, Index = index++, Columns = new List<Column>(), Rows = new List<Row>() };
+                bool titleGot = false;
+
+                for (int rowIndex = 0; rowIndex < table.Rows.Count; rowIndex++)
+                {
+                    var rowItem = table.Rows[rowIndex];
                     if (titleGot)
                     {
-                        Row row = new Row {Data = new List<ColumnData>() };
-                        for (int i = 0; i < reader.FieldCount; i++)
+                        Row row = new Row { Data = new List<ColumnData>() };
+                        for (int col = 0; col < table.Columns.Count; col++)
                         {
-                            obj = reader.GetValue(i);
-                            row.Data.Add(new ColumnData { Index = i, Value = obj });
+                            var obj = rowItem[col];
+                            row.Data.Add(new ColumnData { Index = col, Value = obj });
                         }
                         row.Identity = row.Data.FirstOrDefault(t => t.Index == identityCol).Value;
                         sheet.Rows.Add(row);
                         continue;
                     }
                     var fullLine = true;
-                    for (int i = 0; i < reader.FieldCount; i++)
+                    for (int col = 0; col < table.Columns.Count; col++)
                     {
-                        if ((obj = reader.GetValue(i)) != null && (valueStr = obj as string) != null)
+                        var obj = rowItem[col];
+                        if (obj != null)
                         {
-                            sheet.Columns.Add(new Column { Name = valueStr });
+                            sheet.Columns.Add(new Column { Name = obj.ToString() });
                         }
                         else
                         {
